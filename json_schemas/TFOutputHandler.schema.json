@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema",
+    "$id": "TFOutputHandler.schema.json",
+    "type": "object",
+    "title": "Parameters for TFOutputHandler",
+    "description": "A TFOutputHandler publishes eTaSL frames in TF2",
+    "properties": {
+        "is-TFOutputHandler": {
+            "description": "A key value to flag that this describes a FileOutputHandler",
+            "enum":[true]
+        }
+    },
+    "required": ["is-TFOutputHandler"],
+    "additionalProperties": true,
+    "dependencies":{
+        "is-TFOutputHandler":{
+          "required":["tf"],
+          "properties":{
+                "tf": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "frame_id": {
+                                "title": "frame_id",
+                                "description": "frame_id that will be send to TF2.  The frames are expressed w.r.t. this frame in TF2.",
+                                "type": "string"
+                            },
+                            "variable-names": {
+                                "title": "variable-names",
+                                "description": "list of names for Frame output expressions. Name will also be used as child_frame_id for TF2. When list is empty, all Frame output expressions will be used.",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            }
+                        },
+                        "required": ["frame_id","variable-names"],
+                        "additionalProperties": false
+                    }
+                }
+          }
+        }
+      }
+}

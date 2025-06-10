@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema",
+    "$id":"TwistInputHandler.schema.json",
+    "type":"object",
+    "properties":{
+        "is-TwistInputHandler" : {
+            "description":"To indicate that this describes a twist inputhandler which reads from a geometry_msgs/Twist Message topic and converts it into a twist etasl expression",
+            "type":"boolean",
+            "const": true
+        }
+    },
+    "required":["is-TwistInputHandler"],
+    "additionalProperties": true,
+    "dependencies":{
+        "is-TwistInputHandler":{
+          "required":["topic-name","number_of_tries","depth","default_twist", "when_unpublished", "varname"],
+          "properties":{
+                "topic-name" : {
+                    "description":"name of the topic to subscribe to",
+                    "type":"string"
+                },
+                "number_of_tries" : {
+                    "description":"the number of times unsuccesfully initialize() can be called before throwing an error",
+                    "type":"number"
+                },
+                "depth" : {
+                    "description":"Depth of the topic queue (i.e. buffer size storing incoming messages). Check ROS2 QoS policies for more information",
+                    "type":"number",
+                    "default": 1
+                },
+                "default_twist" : { 
+                    "description": "Default twist used in case that the topic defined in topic-name is not yet publishing",    
+                    "$ref":"https://gitlab.kuleuven.be/rob-expressiongraphs/ros2/etasl_json_schemas/raw/main/schemas/twist.json"
+                },
+                "when_unpublished" : {
+                    "description": "Defines the behavior of the node when nothing has been published to the topic defined in topic-name during activation time of the node",
+                    "enum": ["use_default", "throw_error"],
+                    "oneOf": [
+                        {
+                            "type": "string", 
+                            "const": "use_default",
+                            "title": "Use default value",
+                            "description": "Uses the defined default value in the default_twist field while nothing has been published to the subscribed topic defined in topic-name. An INFO message will be logged."
+                        },
+                        {
+                            "type": "string", 
+                            "const": "throw_error",
+                            "title": "Throw error",
+                            "description": "Throws an error if nothing has been published to the subscribed topic defined in topic-name at the time of activation of the node, preventing its activation. "
+                        }
+                    ] 
+        
+                },
+                "varname" : {            
+                    "description":"Name of the expression variable that was created in the task specification with createInputChannelTwist. The data coming from the topic will be available in the task specification through this variable",
+                    "type":"string"
+                }
+          }
+        }
+      }
+}

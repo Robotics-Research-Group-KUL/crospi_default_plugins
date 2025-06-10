@@ -1,0 +1,84 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema",
+    "$id":"TFInputHandler.schema.json",
+    "type":"object",
+    "properties":{
+        "is-TFInputHandler" : {
+            "description":"To indicate that this describes a TF inputhandler which reads a TF from a source frame to a target frame and converts it into a frame etasl expression",
+            "type":"boolean",
+            "const": true
+        }
+    },
+    "required":["is-TFInputHandler"],
+    "additionalProperties": true,
+    "dependencies":{
+        "is-TFInputHandler":{
+          "required":["number_of_tries","default_pose", "when_unpublished","child_link","parent_link", "varname"],
+          "properties":{
+                "number_of_tries" : {
+                    "description":"the number of times unsuccesfully initialize() can be called before throwing an error",
+                    "type":"number",
+                    "default": 10
+                },
+                "feedforward_input_topic" : {
+                    "description":"(optional) If set, the inputhandler will read from the specified topic of type geometry_msgs/Twist and will be used as feedforward (i.e. time derivative of the frame generated from the TF transform)",
+                    "type":"string",
+                    "default": "/etasl/feedforward/twist_of_tf"
+                },
+                "default_pose" : { 
+                    "description": "Default pose used in case that the topic defined in topic-name is not yet publishing",    
+                    "$ref":"https://gitlab.kuleuven.be/rob-expressiongraphs/ros2/etasl_json_schemas/raw/main/schemas/frame.json",
+                    "default": {
+                        "origin": {"x":0, "y":0, "z":0},
+                        "orientation": {"x":0, "y":0, "z":0, "w":1}
+                    },
+                    "examples": [
+                        [
+                            {
+                                "origin": {"x":0, "y":0, "z":0},
+                                "orientation": {"roll":0, "pitch":0, "yaw":0}
+                            }
+                        ]
+                    ]
+                },
+                "when_unpublished" : {
+                    "description": "Defines the behavior of the node when nothing has been published to the topic defined in topic-name during activation time of the node",
+                    "enum": ["use_default", "throw_error"],
+                    "oneOf": [
+                        {
+                            "type": "string", 
+                            "const": "use_default",
+                            "title": "Use default value",
+                            "description": "Uses the defined default value in the default_pose field while nothing has been published to the subscribed topic defined in topic-name. An INFO message will be logged."
+                        },
+                        {
+                            "type": "string", 
+                            "const": "throw_error",
+                            "title": "Throw error",
+                            "description": "Throws an error if nothing has been published to the subscribed topic defined in topic-name at the time of activation of the node, preventing its activation. "
+                        }
+                    ] 
+        
+                },
+                "child_link" : {            
+                    "description":"Name of the child link whose frame will be used for the requested transformation (in TF notation is called target frame, since the equivalent transformation would transform the data TO this frame)",
+                    "type":"string",
+                    "default": "child_link"
+                },
+                "parent_link" : {            
+                    "description":"Name of the parent link whose frame will be used for the requested transformation (in TF notation is called source frame, since the equivalent transformation would transform the data FROM this frame)",
+                    "type":"string",
+                    "default": "parent_link"
+                },
+                "varname" : {            
+                    "description":"Name of the expression variable in the task specification with createInputChannelFrame. The data coming from the topic will be available in the task specification through this variable",
+                    "type":"string",
+                    "examples": [
+                        "my_input_frame",
+                        "my_target_frame"
+                    ]
+                }
+          }
+        }
+      }
+}

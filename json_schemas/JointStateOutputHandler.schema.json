@@ -1,0 +1,26 @@
+{
+    "$id": "JointStateOutputHandler.schema.json",
+    "type" : "object",
+    "title":"JointStateOutputHandler",
+    "description" : "An outputhandler that outputs the joint state, i.e. position and values of the robot variables",
+    "properties" : {
+        "is-JointStateOutputHandler" : {
+            "description":"A key value to flag that this describes a JointStateOutputHandler",
+            "type":"boolean",
+            "const": true
+        }
+    },
+    "required": ["is-JointStateOutputHandler"],
+    "additionalProperties" : true,
+    "dependencies":{
+        "is-JointStateOutputHandler":{
+          "required":["topic-name"],
+          "properties":{
+            "topic-name" : {
+                "description":"Name of the ROS topic that will serve as output",
+                "type":"string"
+            }
+          }
+        }
+      }
+}

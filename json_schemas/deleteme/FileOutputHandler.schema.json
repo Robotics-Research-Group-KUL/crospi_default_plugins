@@ -1,0 +1,46 @@
+{
+    "$schema":"http://json-schema.org/draft-06/schema",
+    "$id": "FileOutputHandler.json",
+    "type" : "object",
+    "title":"Parameters for FileOutputHandler",
+    "description" : "A FileOutputHandler stores the data in memory and writes it to the given file when finalizing",
+    "properties" : {
+        "is-FileOutputHandler" : {
+            "description":"A key value to flag that this describes a FileOutputHandler",
+            "type":"boolean",
+            "const": true
+        }
+    },
+    "required": ["is-FileOutputHandler"],
+    "additionalProperties" : true,
+    "dependencies":{
+        "is-FileOutputHandler":{
+          "required":["filename","header","maxlines","variable-names"],
+          "properties":{
+                "filename":{
+                    "description": "file name where to save the data, can be an interpolated string",
+                    "type":"string",
+                    "interpolate":true
+                },
+                "header" : {
+                    "description":"True if the file needs to start with a header with column names",
+                    "type":"boolean",
+                    "default":true
+                },
+                "maxlines": {
+                    "description":"Hint for the maximum number of lines.  Can be exceeded, at the cost of a reallocation.",
+                    "type": "number",
+                    "default": 100000
+                },
+                "variable-names": {
+                    "description":"list of names of output expressions to output",
+                    "type":"array",
+                    "items": {
+                        "type":"string"
+                    },
+                    "default":[]
+                }
+          }
+        }
+      }
+}

@@ -1,0 +1,35 @@
+{
+    "$schema":"http://json-schema.org/draft-06/schema",
+    "$id": "TopicOutputHandler.schema.json",
+    "type" : "object",
+    "title":"TopicOutputHandler",
+    "description" : "An outputhandler that outputs to a topic scalar values defined as Output Expressions in eTaSL.",
+    "properties" : {
+        "is-TopicOutputHandler" : {
+            "description":"A key to indicate that this describes a TopicOutputHandler which publishes scalar values defined as Output Expressions in eTaSL.",
+            "type":"boolean",
+            "const": true
+        }
+    },
+    "required": ["is-TopicOutputHandler"],
+    "additionalProperties" : true,
+    "dependencies":{
+        "is-TopicOutputHandler":{
+          "required":["topic-name","variable-names"],
+          "properties":{
+                "topic-name" : {
+                    "description":"Name of the ROS topic that will serve as output.",
+                    "type":"string"
+                },
+                "variable-names": {
+                    "description":"List of names of (scalar!) output expressions to output. \n The current scalar value and a boolean is_declared are published for each of these variables to indicate if the variable is declared as a scalar output expression within the currently running eTaSL task specification.",
+                    "type":"array",
+                    "items": {
+                        "type":"string"
+                    }
+                }
+          }
+        }
+      }
+    
+}

@@ -1,0 +1,26 @@
+<library path="etasl_ros2_default_plugins">
+  <class type="etasl::simple_kinematic_simulation" base_class_type="etasl::RobotDriver">
+    <description>This is a plugin driver for etasl for simple_kinematic_simulation.</description>
+  </class>
+  <class type="etasl::TwistInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a twist input handler (read geometry_msgs/Twist.msg ROS2 msgs).</description>
+  </class>
+  <class type="etasl::WrenchInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a wrench input handler (read geometry_msgs/Wrench.msg ROS2 msgs).</description>
+  </class>
+  <class type="etasl::TopicInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a simple topic input handler (read etasl_interfaces::msg::Input ROS2 msgs).</description>
+  </class>
+  <class type="etasl::TFInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a TF input handler (read ROS2 TFs).</description>
+  </class>
+  <class type="etasl::JointStateOutputHandler" base_class_type="etasl::OutputHandler">
+    <description>This is a plugin for a Joint state output handler (e.g. to visualize in RVIZ).</description>
+  </class>
+  <!-- <class type="etasl::TFOutputHandler" base_class_type="etasl::OutputHandler">
+    <description>This is a plugin for a TF output handler (write ROS TFs).</description>
+  </class> -->
+  <class type="etasl::TopicOutputHandler" base_class_type="etasl::OutputHandler">
+    <description>This is a plugin for a topic output handler (i.e. output several scalar output expressions in one topic).</description>
+  </class>
+</library>

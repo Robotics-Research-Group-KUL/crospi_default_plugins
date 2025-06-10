@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema",
+    "$id":"simple_kinematic_simulation.schema.json",
+    "type":"object",
+    "properties":{
+        "is-simple_kinematic_simulation" : {
+            "description":"To indicate that the task will be executed in simulation, with a virtual robot that integrates joint velocities and gives back joint positions to eTaSL.",
+            "type":"boolean",
+            "const": true
+          }
+    },
+    "required":["is-simple_kinematic_simulation"],
+    "additionalProperties": true,
+    "dependencies":{
+        "is-simple_kinematic_simulation":{
+          "required":["initial_joints", "periodicity"],
+          "properties":{
+            "initial_joints" : {
+                "description":"Initial joint values in [rad] for rotational joints or [m] for prismatic joints. The size must coincide with the length of the robot_joints of the specified robot.",
+                "type":"array",
+                "items": {"type": "number"},
+                "default": [0.0, 0.0 ,0.0 ,0.0 ,0.0 ,0.0]
+            },
+            "periodicity" : {
+                "description":"Periodicity in which the integration will be performed in seconds. 1/periodicity is the update frequency in Hz.",
+                "type":"number",
+                "default": 0.01
+            }
+          }
+        }
+      }
+}
