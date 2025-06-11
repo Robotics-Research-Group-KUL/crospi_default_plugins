@@ -95,7 +95,7 @@ public:
      * @brief create the solver with the given parameters
      *
      */
-    virtual TFOutputHandler::SharedPtr create(const Json::Value& parameters, boost::shared_ptr<etasl::JsonChecker> jsonchecker)
+    virtual TFOutputHandler::SharedPtr create(const Json::Value& parameters, std::shared_ptr<etasl::JsonChecker> jsonchecker)
     {
         std::vector<TFSpec> tfspecs;
         for (auto p : jsonchecker->asArray(parameters, "tf")) {

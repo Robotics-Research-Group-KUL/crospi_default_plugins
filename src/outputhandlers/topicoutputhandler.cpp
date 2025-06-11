@@ -14,7 +14,7 @@ bool TopicOutputHandler::construct(
     std::string _name, 
     rclcpp_lifecycle::LifecycleNode::SharedPtr _node,
     const Json::Value& parameters,
-    boost::shared_ptr<etasl::JsonChecker> jsonchecker)
+    std::shared_ptr<etasl::JsonChecker> jsonchecker)
 {
     node = _node;
     topicname = jsonchecker->asString(parameters, "topic-name");

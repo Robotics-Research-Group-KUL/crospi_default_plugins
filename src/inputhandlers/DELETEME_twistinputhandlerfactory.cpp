@@ -102,7 +102,7 @@ public:
      * @brief create the solver with the given parameters
      *
      */
-    virtual InputHandler::SharedPtr create(const Json::Value& parameters, boost::shared_ptr<etasl::JsonChecker> jsonchecker)
+    virtual InputHandler::SharedPtr create(const Json::Value& parameters, std::shared_ptr<etasl::JsonChecker> jsonchecker)
     {
         std::string topic_name = jsonchecker->asString(parameters, "topic-name");
         

@@ -52,7 +52,7 @@ public:
         std::string name, 
         rclcpp_lifecycle::LifecycleNode::SharedPtr _node,
         const Json::Value& _parameters,
-        boost::shared_ptr<etasl::JsonChecker> _jsonchecker) override;
+        std::shared_ptr<etasl::JsonChecker> _jsonchecker) override;
 
     /**
      * @brief
