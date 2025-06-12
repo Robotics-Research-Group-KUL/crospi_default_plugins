@@ -3,22 +3,22 @@
 #include <string>
 
 
-#include "robot_interfacing_utils/robotdriver.hpp"
+#include "robot_interfacing_utils/robotsimulator.hpp"
 #include "robot_interfacing_utils/controlmodes_enum.hpp"
 
 
 namespace etasl {
 
-class simple_kinematic_simulation : public RobotDriver {
+class simple_kinematic_simulation : public RobotSimulator {
     public:
         typedef std::shared_ptr<simple_kinematic_simulation> SharedPtr;
 
 
     private:
         
-        // FeedbackMsg* feedback_ptr; Defined in super class RobotDriver at header file robotdriver.hpp
-        // SetpointMsg* setpoint_ptr; Defined in super class RobotDriver at header file robotdriver.hpp
-        // std::string name;; Defined in super class RobotDriver at header file robotdriver.hpp
+        // FeedbackMsg* feedback_ptr; Defined in super class RobotSimulator at header file robotsimulator.hpp
+        // SetpointMsg* setpoint_ptr; Defined in super class RobotSimulator at header file robotsimulator.hpp
+        // std::string name;; Defined in super class RobotSimulator at header file robotsimulator.hpp
 
         double periodicity;
         ControlMode::ControlMode control_mode;

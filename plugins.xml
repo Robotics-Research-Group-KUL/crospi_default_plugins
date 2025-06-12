@@ -1,5 +1,5 @@
 <library path="etasl_ros2_default_plugins">
-  <class type="etasl::simple_kinematic_simulation" base_class_type="etasl::RobotDriver">
+  <class type="etasl::simple_kinematic_simulation" base_class_type="etasl::RobotSimulator">
     <description>This is a plugin driver for etasl for simple_kinematic_simulation.</description>
   </class>
   <class type="etasl::TwistInputHandler" base_class_type="etasl::InputHandler">
