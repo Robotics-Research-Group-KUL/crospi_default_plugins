@@ -71,7 +71,7 @@ bool WrenchInputHandler::initialize(
     using namespace std::placeholders;
     auto cb = std::bind(&WrenchInputHandler::on_new_message, this, _1);
     auto qos = rclcpp::SensorDataQoS().keep_last(depth).lifespan(100ms);
-    sub = node->create_subscription<MsgType>(name, qos, cb);
+    sub = node->create_subscription<MsgType>(topicname, qos, cb);
     if (!sub) {
         //Log with name
         RCLCPP_FATAL(node->get_logger(), "Could not create subscriber for input handler '%s'.", name.c_str());
