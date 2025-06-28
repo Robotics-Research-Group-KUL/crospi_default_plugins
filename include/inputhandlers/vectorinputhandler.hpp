@@ -1,25 +1,34 @@
 #pragma once
 
-#include "geometry_msgs/msg/twist.hpp"
+#include "etasl_task_utils/inputhandler.hpp"
 #include <expressiongraph/context.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include <unordered_map>
 
-#include "etasl_task_utils/inputhandler.hpp"
 #include "etasl_task_utils/flowstatus.hpp"
+#include <geometry_msgs/msg/vector3.hpp>
+#include <geometry_msgs/msg/point.hpp>
+#include "geometry_msgs/msg/twist.hpp"
+
+#include <jsoncpp/json/json.h>
 #include "etasl_task_utils/json_checker.hpp"
+
+
+
 
 // #include <mutex>
 
 namespace etasl {
 using namespace KDL;
 
-class TwistInputHandler : public InputHandler {
+class VectorInputHandler : public InputHandler {
 public:
-    typedef geometry_msgs::msg::Twist MsgType;
-    typedef std::shared_ptr<TwistInputHandler> SharedPtr;
+    typedef geometry_msgs::msg::Vector3 MsgType_vector;
+    typedef geometry_msgs::msg::Point MsgType_point;
+    typedef geometry_msgs::msg::Vector3 MsgTypeDeriv;
+    typedef std::shared_ptr<VectorInputHandler> SharedPtr;
 
 private:
     // struct BufferElement {
@@ -30,37 +39,55 @@ private:
 
 
     struct InputData {
-        MsgType data;
+        MsgType_vector data;
         FlowStatus fs;
     } input_msg;
 
+    struct InputDataDeriv {
+        MsgTypeDeriv data;
+        FlowStatus fs;
+    } input_msg_deriv;
+
+    rclcpp_lifecycle::LifecycleNode::SharedPtr node;
+    rclcpp::Subscription<MsgType_vector>::SharedPtr sub_vector;
+    rclcpp::Subscription<MsgType_point>::SharedPtr sub_point;
+    rclcpp::Subscription<MsgTypeDeriv>::SharedPtr deriv_sub;
+
+
+    int nroftries;
+    std::string when_unpublished;
+    std::string msg_type;
+
+    std::string varname;
+    std::string feedforward_input_topic;
+    MsgType_vector default_msg;
+    MsgTypeDeriv default_msg_deriv;
+
+    bool enable_feedforward;
     std::string name;
     std::string topicname;
-    rclcpp_lifecycle::LifecycleNode::SharedPtr node;
-    rclcpp::Subscription<MsgType>::SharedPtr sub;
-    MsgType msg;
-    MsgType default_msg;
-    KDL::Twist twist;
-    std::string when_unpublished;
-    bool initialized;
-    bool activated;
-    int nroftries;
+    KDL::Vector kdl_vector;
+    KDL::Vector kdl_velocity;
+    int time_ndx;
     int counter;
     int depth;
-    std::string varname;
-    etasl::VariableType<KDL::Twist>::Ptr inp;
+    int counter_deriv;
+    bool initialized;
+    bool activated;
+    MsgType_vector msg;
+    etasl::VariableType<KDL::Vector>::Ptr inp;
     rclcpp::CallbackGroup::SharedPtr cbg;
 
+
 public:
-    TwistInputHandler();
+    VectorInputHandler();
 
     virtual bool construct(
         std::string name,    
         rclcpp_lifecycle::LifecycleNode::SharedPtr _node,
         const Json::Value& parameters,
         std::shared_ptr<etasl::JsonChecker> jsonchecker) override;
-        
-        
+
     /**
      * will only return true if it has received values for all the joints named in jnames.
     */
@@ -71,7 +98,9 @@ public:
         Eigen::VectorXd& jpos,
         Eigen::VectorXd& fpos) override;
 
-    void on_new_message(const MsgType& msg);
+    void on_new_message_vector(const MsgType_vector& msg);
+    void on_new_message_point(const MsgType_point& msg);
+
 
     virtual void update(
         double time,
@@ -90,8 +119,12 @@ public:
     virtual const std::string& getName() const override;
 
     void consume_data(const bool& make_old_data);
+    void consume_data_deriv(const bool& make_old_data);
+    void fetch_tf_transform();
 
-    virtual ~TwistInputHandler();
+    void on_new_message_deriv(const VectorInputHandler::MsgTypeDeriv& msg);
+
+    virtual ~VectorInputHandler();
 };
 
 } // namespace etasl

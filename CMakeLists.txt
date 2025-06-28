@@ -49,10 +49,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(src_etasl_ros2_default_plugins
     src/simulators/simple_kinematic_simulation.cpp
 
+    src/inputhandlers/topicinputhandler.cpp
     src/inputhandlers/twistinputhandler.cpp
     src/inputhandlers/wrenchinputhandler.cpp
     src/inputhandlers/tfinputhandler.cpp
-    src/inputhandlers/topicinputhandler.cpp
+    src/inputhandlers/poseinputhandler.cpp
+    src/inputhandlers/vectorinputhandler.cpp
 
     src/outputhandlers/jointstateoutputhandler.cpp
     # src/outputhandlers/tfoutputhandler.cpp

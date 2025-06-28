@@ -1,25 +1,32 @@
 #pragma once
 
-#include "geometry_msgs/msg/twist.hpp"
+#include "etasl_task_utils/inputhandler.hpp"
 #include <expressiongraph/context.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include <unordered_map>
 
-#include "etasl_task_utils/inputhandler.hpp"
 #include "etasl_task_utils/flowstatus.hpp"
+#include <geometry_msgs/msg/pose.hpp>
+#include "geometry_msgs/msg/twist.hpp"
+
+#include <jsoncpp/json/json.h>
 #include "etasl_task_utils/json_checker.hpp"
+
+
+
 
 // #include <mutex>
 
 namespace etasl {
 using namespace KDL;
 
-class TwistInputHandler : public InputHandler {
+class PoseInputHandler : public InputHandler {
 public:
-    typedef geometry_msgs::msg::Twist MsgType;
-    typedef std::shared_ptr<TwistInputHandler> SharedPtr;
+    typedef geometry_msgs::msg::Pose MsgType;
+    typedef geometry_msgs::msg::Twist MsgTypeDeriv;
+    typedef std::shared_ptr<PoseInputHandler> SharedPtr;
 
 private:
     // struct BufferElement {
@@ -34,33 +41,49 @@ private:
         FlowStatus fs;
     } input_msg;
 
-    std::string name;
-    std::string topicname;
+    struct InputDataDeriv {
+        MsgTypeDeriv data;
+        FlowStatus fs;
+    } input_msg_deriv;
+
     rclcpp_lifecycle::LifecycleNode::SharedPtr node;
     rclcpp::Subscription<MsgType>::SharedPtr sub;
-    MsgType msg;
-    MsgType default_msg;
-    KDL::Twist twist;
-    std::string when_unpublished;
-    bool initialized;
-    bool activated;
+    rclcpp::Subscription<MsgTypeDeriv>::SharedPtr deriv_sub;
+
+
     int nroftries;
+    std::string when_unpublished;
+
+    std::string varname;
+    std::string feedforward_input_topic;
+    MsgType default_msg;
+    MsgTypeDeriv default_msg_deriv;
+
+    bool enable_feedforward;
+    std::string name;
+    std::string topicname;
+    KDL::Frame frame;
+    KDL::Twist twist;
+    int time_ndx;
     int counter;
     int depth;
-    std::string varname;
-    etasl::VariableType<KDL::Twist>::Ptr inp;
+    int counter_deriv;
+    bool initialized;
+    bool activated;
+    MsgType msg;
+    etasl::VariableType<KDL::Frame>::Ptr inp;
     rclcpp::CallbackGroup::SharedPtr cbg;
 
+
 public:
-    TwistInputHandler();
+    PoseInputHandler();
 
     virtual bool construct(
         std::string name,    
         rclcpp_lifecycle::LifecycleNode::SharedPtr _node,
         const Json::Value& parameters,
         std::shared_ptr<etasl::JsonChecker> jsonchecker) override;
-        
-        
+
     /**
      * will only return true if it has received values for all the joints named in jnames.
     */
@@ -72,6 +95,7 @@ public:
         Eigen::VectorXd& fpos) override;
 
     void on_new_message(const MsgType& msg);
+
 
     virtual void update(
         double time,
@@ -90,8 +114,12 @@ public:
     virtual const std::string& getName() const override;
 
     void consume_data(const bool& make_old_data);
+    void consume_data_deriv(const bool& make_old_data);
+    void fetch_tf_transform();
 
-    virtual ~TwistInputHandler();
+    void on_new_message_deriv(const PoseInputHandler::MsgTypeDeriv& msg);
+
+    virtual ~PoseInputHandler();
 };
 
 } // namespace etasl

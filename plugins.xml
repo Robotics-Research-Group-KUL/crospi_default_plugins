@@ -11,6 +11,12 @@
   <class type="etasl::TopicInputHandler" base_class_type="etasl::InputHandler">
     <description>This is a plugin for a simple topic input handler (read etasl_interfaces::msg::Input ROS2 msgs).</description>
   </class>
+  <class type="etasl::PoseInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a pose input handler (read geometry_msgs/Pose.msg ROS2 msgs).</description>
+  </class>
+  <class type="etasl::VectorInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a Vector input handler (read geometry_msgs/Vector3.msg or geometry_msgs/Point.msg ROS2 msgs).</description>
+  </class>
   <class type="etasl::TFInputHandler" base_class_type="etasl::InputHandler">
     <description>This is a plugin for a TF input handler (read ROS2 TFs).</description>
   </class>
