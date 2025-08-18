@@ -41,7 +41,7 @@ bool simple_kinematic_simulation::initialize()
     joint_pos = initial_joints;
 
     feedback_ptr->mtx.lock();
-    setpoint_ptr->mtx.lock();
+    // setpoint_ptr->mtx.lock();
 
     feedback_ptr->joint.pos.data = joint_pos;
     feedback_ptr->joint.pos.is_available = true;
@@ -60,7 +60,7 @@ bool simple_kinematic_simulation::initialize()
     // feedback_ptr->base.quat.is_available = true;
     // feedback_ptr->base.twist.is_available = true;
 
-    setpoint_ptr->mtx.unlock();
+    // setpoint_ptr->mtx.unlock();
     feedback_ptr->mtx.unlock();
 
     return true;
@@ -70,7 +70,7 @@ bool simple_kinematic_simulation::initialize()
 void simple_kinematic_simulation::update(volatile std::atomic<bool>& stopFlag)
 {
     feedback_ptr->mtx.lock();
-    setpoint_ptr->mtx.lock();
+    // setpoint_ptr->mtx.lock();
 
     assert(feedback_ptr->joint.pos.data.size() == setpoint_ptr->velocity.data.size());
 
@@ -146,7 +146,7 @@ void simple_kinematic_simulation::update(volatile std::atomic<bool>& stopFlag)
     // std::cout << "Driver update has set all pos values to " << this->periodicity << std::endl;
     // std::cout << "Driver update has set all pos values to " << getName() << std::endl;
 
-    setpoint_ptr->mtx.unlock();
+    // setpoint_ptr->mtx.unlock();
     feedback_ptr->mtx.unlock();
 
 

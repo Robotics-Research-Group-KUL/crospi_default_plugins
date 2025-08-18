@@ -53,6 +53,9 @@ class simple_kinematic_simulation : public RobotSimulator {
 
         virtual void finalize() override;
 
+        // virtual void* getSetpointJointVelocityBufferPtr() override;
+        // virtual void* getJointPositionBufferPtr() override;
+
         // virtual const std::string& getName() const override;
 
         virtual ~simple_kinematic_simulation();
