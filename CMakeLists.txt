@@ -4,6 +4,9 @@ project(etasl_ros2_default_plugins)
 message("--------------etasl_ros2_default_plugins compiling ----------------")
 
 
+
+
+
 # if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 #   add_compile_options(-Wall -Wextra -Wpedantic)
 # endif()
@@ -31,6 +34,13 @@ find_package(jsoncpp REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+
+# -- start --Stuff for triple buffer implementation of boost 1.88
+set(BOOST_ROOT "/opt/boost/1.88.0")
+set(CMAKE_PREFIX_PATH "/opt/boost/1.88.0" ${CMAKE_PREFIX_PATH})
+find_package(Boost 1.88 REQUIRED)
+message(STATUS "Using Boost version ${Boost_VERSION}")
+# -- end -- Stuff for triple buffer implementation of boost 1.88
 
 # # Add this at the top of your CMakeLists.txt file
 # find_package(pybind11 REQUIRED)
@@ -89,6 +99,8 @@ set(dependencies
     etasl::expressiongraph_context_lua   
     fmt   
     jsoncpp
+    buffer_utils
+    triple_buffer
     # etasl_task_utils
 )
 
