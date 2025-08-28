@@ -25,6 +25,56 @@
                 "description":"Periodicity in which the integration will be performed in seconds. 1/periodicity is the update frequency in Hz.",
                 "type":"number",
                 "default": 0.01
+            },
+            "name_expr_joint_vel" : {
+              "description":"If defined, the simulator will generate a ramp. Defines the name of the expression that will be used to put the joint velocities coming from this simulator. This name can be then used in etasl with selected_name_0 = ctx:createInputChannelScalar('selected_name_0') for each joint",
+              "type":"string",
+              "default": "joint_vel"
+            },
+            "name_expr_joint_torque" : {
+              "description":"If defined, the simulator will generate a ramp. Defines the name of the expression that will be used to put the joint torques coming from this simulator. This name can be then used in etasl with selected_name_0 = ctx:createInputChannelScalar('selected_name_0') for each joint",
+              "type":"string",
+              "default": "joint_torque"
+            },
+            "name_expr_joint_current" : {
+              "description":"If defined, the simulator will generate a ramp. Defines the name of the expression that will be used to put the joint currents coming from this simulator. This name can be then used in etasl with selected_name_0 = ctx:createInputChannelScalar('selected_name_0') for each joint",
+                "type":"string",
+                "default": "joint_current"
+            },
+            "name_expr_cartesian_pos" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the cartesian positions coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelVector('selected_name')",
+                "type":"string",
+                "default": "task_frame_pos"
+            },
+            "name_expr_cartesian_quat" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the cartesian orientation coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelRotation('selected_name')",
+                "type":"string",
+                "default": "task_frame_quat"
+            },
+            "name_expr_cartesian_twist" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the cartesian twist coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelTwist('selected_name')",
+                "type":"string",
+                "default": "task_frame_twist"
+            },
+            "name_expr_cartesian_wrench" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the cartesian wrench coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelWrench('selected_name')",
+              "type":"string",
+              "default": "task_frame_wrench"
+            },
+            "name_expr_base_pos" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the position of the base of the robot coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelVector('selected_name')",
+                "type":"string",
+                "default": "base_pos"
+            },
+            "name_expr_base_quat" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the orientation of the base of the robot coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelRotation('selected_name')",
+              "type":"string",
+              "default": "base_quat"
+            },
+            "name_expr_base_twist" : {
+              "description":"If defined, the simulator will generate a ramp. Name of the expression that will be used to put the twist of the base of the robot coming from this simulator. This name can be then used in etasl with selected_name = ctx:createInputChannelTwist('selected_name')",
+                "type":"string",
+                "default": "base_twist"
             }
           }
         }
