@@ -4,7 +4,7 @@
 
 
 #include "robot_interfacing_utils/robotsimulator.hpp"
-#include "robot_interfacing_utils/controlmodes_enum.hpp"
+// #include "robot_interfacing_utils/controlmodes_enum.hpp"
 // #include "robot_interfacing_utils/robot_data_structures.hpp"
 
 
@@ -24,7 +24,6 @@ class simple_kinematic_simulation : public RobotSimulator {
         // std::string name;; Defined in super class RobotSimulator at header file robotsimulator.hpp
 
         double periodicity;
-        ControlMode::ControlMode control_mode;
 
         std::vector<float> initial_joints;
         robotdrivers::DynamicJointDataField setpoint_joint_vel;
