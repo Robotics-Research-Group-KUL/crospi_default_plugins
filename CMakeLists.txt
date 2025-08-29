@@ -35,12 +35,12 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 
-# -- start --Stuff for triple buffer implementation of boost 1.88
-set(BOOST_ROOT "/opt/boost/1.88.0")
-set(CMAKE_PREFIX_PATH "/opt/boost/1.88.0" ${CMAKE_PREFIX_PATH})
-find_package(Boost 1.88 REQUIRED)
+# -- start --Stuff for triple buffer implementation of boost 1.89
+set(BOOST_ROOT "/opt/boost/1.89.0")
+set(CMAKE_PREFIX_PATH "/opt/boost/1.89.0" ${CMAKE_PREFIX_PATH})
+find_package(Boost 1.89 REQUIRED)
 message(STATUS "Using Boost version ${Boost_VERSION}")
-# -- end -- Stuff for triple buffer implementation of boost 1.88
+# -- end -- Stuff for triple buffer implementation of boost 1.89
 
 # # Add this at the top of your CMakeLists.txt file
 # find_package(pybind11 REQUIRED)
@@ -99,8 +99,6 @@ set(dependencies
     etasl::expressiongraph_context_lua   
     fmt   
     jsoncpp
-    buffer_utils
-    triple_buffer
     # etasl_task_utils
 )
 
@@ -109,7 +107,9 @@ pluginlib_export_plugin_description_file(etasl_ros2 plugins.xml)
 
 target_include_directories(etasl_ros2_default_plugins PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include>
+  ${Boost_INCLUDE_DIRS}
+  )
 
 ament_target_dependencies(etasl_ros2_default_plugins ${rosdependencies})  
 target_link_libraries(etasl_ros2_default_plugins ${dependencies})
