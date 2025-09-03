@@ -111,7 +111,8 @@ public:
 
     virtual void on_activate(Context::Ptr ctx,    
                             const std::vector<std::string>& jnames,
-                            const std::vector<std::string>& fnames) override;
+                            const std::vector<std::string>& fnames,
+                            boost::shared_ptr<solver> slv) override;
 
 
     virtual void on_deactivate(Context::Ptr ctx) override;

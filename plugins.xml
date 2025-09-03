@@ -29,4 +29,8 @@
   <class type="etasl::TopicOutputHandler" base_class_type="etasl::OutputHandler">
     <description>This is a plugin for a topic output handler (i.e. output several scalar output expressions in one topic).</description>
   </class>
+  <class type="etasl::TopicOutputDerivativesHandler" base_class_type="etasl::OutputHandler">
+    <description>This is a plugin for a topic output handler of derivatives (i.e. output several derivatives of scalar output expressions in one topic).</description>
+  </class>
+
 </library>

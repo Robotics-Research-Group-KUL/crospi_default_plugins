@@ -213,7 +213,8 @@ void PoseInputHandler::update(
 
 void PoseInputHandler::on_activate(Context::Ptr ctx,
     const std::vector<std::string>& jnames,
-    const std::vector<std::string>& fnames) 
+    const std::vector<std::string>& fnames,
+    boost::shared_ptr<solver> slv) 
 {
     // std::cout << "entering on activate =======================" << std::endl;
     if(!initialized){

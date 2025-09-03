@@ -69,6 +69,7 @@ set(src_etasl_ros2_default_plugins
     src/outputhandlers/jointstateoutputhandler.cpp
     # src/outputhandlers/tfoutputhandler.cpp
     src/outputhandlers/topicoutputhandler.cpp
+    src/outputhandlers/topicoutputderivativeshandler.cpp
     #Add all plugin src files here
 )
 
