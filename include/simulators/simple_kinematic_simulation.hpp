@@ -43,8 +43,6 @@ class simple_kinematic_simulation : public RobotSimulator {
         simple_kinematic_simulation();
 
         virtual void construct(std::string robot_name, 
-                        robotdrivers::FeedbackMsg* fb, 
-                        robotdrivers::SetpointMsg* sp,
                         const Json::Value& config,
                         std::shared_ptr<etasl::JsonChecker> jsonchecker) override;
 

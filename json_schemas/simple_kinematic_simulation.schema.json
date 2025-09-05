@@ -13,8 +13,18 @@
     "additionalProperties": true,
     "dependencies":{
         "is-simple_kinematic_simulation":{
-          "required":["initial_joints", "periodicity"],
+          "required":["robot_joints","initial_joints", "periodicity"],
           "properties":{
+            "robot_joints": {
+              "description":"Names of the joints that will be simulated through this robotsimulator. This names need to be consistent with the ones declared in the URDF file of the robot and must exist also in the robot_joints declared in the default_robot_specification.",
+              "type":"array",
+              "items": {"type": "string"},
+              "default": ["joint1", "joint2", "joint3", "etc..."],
+              "examples": [
+                  ["shoulder_pan_joint","shoulder_lift_joint","elbow_joint","wrist_1_joint","wrist_2_joint","wrist_3_joint"],
+                  ["joint1","joint2","joint3","joint4","joint5","joint6","joint7"]
+              ]
+          },
             "initial_joints" : {
                 "description":"Initial joint values in [rad] for rotational joints or [m] for prismatic joints. The size must coincide with the length of the robot_joints of the specified robot.",
                 "type":"array",

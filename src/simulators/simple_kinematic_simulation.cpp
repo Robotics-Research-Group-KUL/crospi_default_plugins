@@ -13,8 +13,6 @@ simple_kinematic_simulation::simple_kinematic_simulation()
 }
 
 void simple_kinematic_simulation::construct(std::string robot_name, 
-                        robotdrivers::FeedbackMsg* fb, 
-                        robotdrivers::SetpointMsg* sp,
                         const Json::Value& config,
                         std::shared_ptr<etasl::JsonChecker> jsonchecker)
 {
@@ -37,8 +35,6 @@ void simple_kinematic_simulation::construct(std::string robot_name,
     // setpoint_joint_vel.data.fill( 0.0); //Initialize setpoint joint velocities to zero
     setpoint_joint_vel.data.resize(initial_joints.size(), 0.0); //Initialize setpoint joint velocities to zero
 
-    feedback_ptr = fb; //defined in RobotDriver super class.
-    setpoint_ptr = sp; //defined in RobotDriver super class.
     name = robot_name; //defined in RobotDriver super class.
     std::cout << "Constructed object of simple_kinematic_simulation class with name: " << name << std::endl;
 
@@ -94,7 +90,10 @@ void simple_kinematic_simulation::update(volatile std::atomic<bool>& stopFlag)
 
     for (unsigned int i=0; i<setpoint_joint_vel.data.size(); ++i) {
         joint_pos.data[i] += setpoint_joint_vel.data[i]*periodicity; //simple integration
+
+        // std::cout << setpoint_joint_vel.data[i] << ", ";
     }
+    // std::cout << std::endl;
 
     writeFeedbackJointPosition(joint_pos);
 
