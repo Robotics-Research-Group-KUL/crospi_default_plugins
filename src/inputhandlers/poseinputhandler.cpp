@@ -132,7 +132,12 @@ bool PoseInputHandler::initialize(
     using namespace std::chrono_literals;
     using namespace std::placeholders;
     auto cb = std::bind(&PoseInputHandler::on_new_message, this, _1);
-    auto qos = rclcpp::SensorDataQoS().keep_last(depth).lifespan(100ms);
+    auto qos = rclcpp::SensorDataQoS()
+    .keep_last(depth)
+    .lifespan(100ms)
+    .reliability(rclcpp::ReliabilityPolicy::BestEffort)
+    .durability(rclcpp::DurabilityPolicy::Volatile);
+    
     sub = node->create_subscription<MsgType>(topicname, qos, cb);
 
     if (!sub) {
