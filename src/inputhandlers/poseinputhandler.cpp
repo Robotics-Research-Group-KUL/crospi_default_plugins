@@ -133,6 +133,7 @@ bool PoseInputHandler::initialize(
     using namespace std::placeholders;
     auto cb = std::bind(&PoseInputHandler::on_new_message, this, _1);
     auto qos = rclcpp::SensorDataQoS().keep_last(depth).lifespan(100ms);
+    
     sub = node->create_subscription<MsgType>(topicname, qos, cb);
 
     if (!sub) {
@@ -213,7 +214,8 @@ void PoseInputHandler::update(
 
 void PoseInputHandler::on_activate(Context::Ptr ctx,
     const std::vector<std::string>& jnames,
-    const std::vector<std::string>& fnames) 
+    const std::vector<std::string>& fnames,
+    boost::shared_ptr<solver> slv) 
 {
     // std::cout << "entering on activate =======================" << std::endl;
     if(!initialized){

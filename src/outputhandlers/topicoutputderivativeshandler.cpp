@@ -1,16 +1,17 @@
-#include "outputhandlers/topicoutputhandler.hpp"
+#include "outputhandlers/topicoutputderivativeshandler.hpp"
 
 namespace etasl {
 
-TopicOutputHandler::TopicOutputHandler()
+TopicOutputDerivativesHandler::TopicOutputDerivativesHandler()
     : initialized(false)
     , activated(false)
+    , time_ndx(0)
 {
 
 }
 
 
-bool TopicOutputHandler::construct(
+bool TopicOutputDerivativesHandler::construct(
     std::string _name, 
     rclcpp_lifecycle::LifecycleNode::SharedPtr _node,
     const Json::Value& parameters,
@@ -30,27 +31,27 @@ bool TopicOutputHandler::construct(
 
 
 
-bool TopicOutputHandler::initialize(
+bool TopicOutputDerivativesHandler::initialize(
     Context::Ptr ctx,
     const std::vector<std::string>& jnames,
     const std::vector<std::string>& fnames)
 {
-    // std::cout << "entering on initialize topicoutputhandler =======================" << std::endl;
+    // std::cout << "entering on initialize topicoutputDerivativeshandler =======================" << std::endl;
 
     if(!initialized){
-        pub = node->create_publisher<etasl_interfaces::msg::Output>(topicname, 10);
+        pub = node->create_publisher<etasl_interfaces::msg::OutputDerivatives>(topicname, 10);
         pub->on_deactivate();
         initialized = true;
-        // std::cout << "initialized topicoutputhandler=======================" << std::endl;
+        // std::cout << "initialized topicoutputDerivativeshandler=======================" << std::endl;
     }
     else{
-        RCLCPP_WARN(node->get_logger(), "Ignoring request: the topicoutputhandler was already initialized, so it cannot be initialized again.");
+        RCLCPP_WARN(node->get_logger(), "Ignoring request: the topicoutputDerivativeshandler was already initialized, so it cannot be initialized again.");
         return false;
     }
     return true;
 }
 
-void TopicOutputHandler::update(
+void TopicOutputDerivativesHandler::update(
     const std::vector<std::string>& jnames,
     const Eigen::VectorXd& jpos,
     const Eigen::VectorXd& jvel,
@@ -59,35 +60,46 @@ void TopicOutputHandler::update(
     const Eigen::VectorXd& fpos)
 {
     if(!activated){
-        // RCLCPP_WARN(node->get_logger(), "The topicoutputhandler cannot be updated since it has not been initialized yet");
+        // RCLCPP_WARN(node->get_logger(), "The topicoutputDerivativeshandler cannot be updated since it has not been initialized yet");
         return;
     }
     assert( msg.data.size() == outp.size() /* size of msg.data and outp vector containing expressions is not the same */); 
 
+    slv_->getJointVelocities(jvelocities);
+    slv_->getFeatureVelocities(fvelocities);
+
     unsigned int L = outp.size();
     for (unsigned int i = 0; i < L; ++i) {
-        msg.data[i] = outp[i]->value();
+        outp[i]->value();  // always call value() before derivative() !
+        msg.data[i] = outp[i]->derivative(time_ndx);
+        for (unsigned int j=0;j< jnames_ctx_ndx.size();++j) {
+            msg.data[i] += outp[i]->derivative(jnames_ctx_ndx[j]) * jvelocities[j];
+        }
+        for (unsigned int j=0;j< fnames_ctx_ndx.size();++j) {
+            msg.data[i] += outp[i]->derivative(fnames_ctx_ndx[j]) * fvelocities[j];
+        }
     }
     pub->publish(msg);
 }
 
-void TopicOutputHandler::on_activate(Context::Ptr ctx, 
+void TopicOutputDerivativesHandler::on_activate(Context::Ptr ctx, 
     const std::vector<std::string>& jnames, 
-    const std::vector<std::string>& fnames,
+    const std::vector<std::string>& fnames, 
     boost::shared_ptr<solver> slv) 
 {
     // std::cout << "entering on activate =======================" << std::endl;
     // if (outp.size()>0){
-    //     throw std::runtime_error("Topicoutputhandler: Before calling on_activate again, on_deactivate must be called ");
+    //     throw std::runtime_error("TopicoutputDerivativeshandler: Before calling on_activate again, on_deactivate must be called ");
     //     return;
     // }
+    
 
     if(!initialized){
-        RCLCPP_WARN(node->get_logger(), "The topicoutputhandler cannot be activated since it has not been initialized yet");
+        RCLCPP_WARN(node->get_logger(), "The topicoutputDerivativeshandler cannot be activated since it has not been initialized yet");
         return;
     }
     if(activated){
-        RCLCPP_WARN(node->get_logger(), "The topicoutputhandler cannot be activated since it has already been activated. Call on_deactivate first.");
+        RCLCPP_WARN(node->get_logger(), "The topicoutputDerivativeshandler cannot be activated since it has already been activated. Call on_deactivate first.");
         return;
     }
 
@@ -128,10 +140,42 @@ void TopicOutputHandler::on_activate(Context::Ptr ctx,
         }
     }
     pub->on_activate(); //This works because we check for initialized above
+
+    //Stuff to compute derivatives:
+    time_ndx      = ctx->getScalarNdx("time");
+
+    std::vector< std::string> jnames_complete; //jnames coming as argument could be a subset of this
+    slv->getJointNameVector(jnames_complete);
+    jnames_ctx_ndx.resize(jnames_complete.size());
+    for (unsigned int i=0;i<jnames_complete.size();++i) {
+        int r = ctx->getScalarNdx( jnames_complete[i] );
+        assert( (r!= -1) && "BUG: solver cannot contain variables that are outside the context");
+        jnames_ctx_ndx[i] = r; 
+    }
+
+    // int fnames; //already available in the argument of the function
+    // slv->getFeatureNameVector(fnames);  
+    fnames_ctx_ndx.resize(fnames.size(), 0.0);
+    for (unsigned int i=0;i<fnames.size();++i) {
+        int r = ctx->getScalarNdx( fnames[i] );
+        assert( (r!= -1) && "BUG: solver cannot contain variables that are outside the context");
+        fnames_ctx_ndx[i] = r; 
+    }
+
+    jvelocities.resize( jnames_complete.size() );
+    jvelocities = Eigen::VectorXd::Zero( jnames_complete.size() );
+
+    fvelocities.resize( fnames.size() ); 
+    fvelocities = Eigen::VectorXd::Zero( fnames.size() );
+
+
+
+    slv_ = slv;
+
     activated = true;
 }
 
-void TopicOutputHandler::on_deactivate(Context::Ptr ctx) {
+void TopicOutputDerivativesHandler::on_deactivate(Context::Ptr ctx) {
     outp.clear();
     msg.data.clear();
     msg.names.clear();
@@ -142,11 +186,11 @@ void TopicOutputHandler::on_deactivate(Context::Ptr ctx) {
     activated = false;
 }
 
-const std::string& TopicOutputHandler::getName() const {
+const std::string& TopicOutputDerivativesHandler::getName() const {
     return name;
 }
 
-// void TopicOutputHandler::finalize()
+// void TopicOutputDerivativesHandler::finalize()
 // {
 //     pub.reset();
 // }
@@ -154,4 +198,4 @@ const std::string& TopicOutputHandler::getName() const {
 } // namespace etasl
 
 #include <pluginlib/class_list_macros.hpp>
-PLUGINLIB_EXPORT_CLASS(etasl::TopicOutputHandler, etasl::OutputHandler)
+PLUGINLIB_EXPORT_CLASS(etasl::TopicOutputDerivativesHandler, etasl::OutputHandler)

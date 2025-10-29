@@ -121,7 +121,8 @@ void WrenchInputHandler::update(
 
 void WrenchInputHandler::on_activate(Context::Ptr ctx,
     const std::vector<std::string>& jnames,
-    const std::vector<std::string>& fnames) 
+    const std::vector<std::string>& fnames,
+    boost::shared_ptr<solver> slv) 
 {
     if(!initialized){
         RCLCPP_WARN(node->get_logger(), "The WrenchInputHandler cannot be activated since it has not been initialized yet");

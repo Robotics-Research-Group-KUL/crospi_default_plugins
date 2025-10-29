@@ -1,46 +1,44 @@
-#ifndef JOINTSTATEOUTPUTHANDLER_HPP_34DF43
-#define JOINTSTATEOUTPUTHANDLER_HPP_34DF43
-#include "expressiongraph/context.hpp"
+#pragma once
+
+#include "etasl_task_utils/outputhandler.hpp"
+
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "sensor_msgs/msg/joint_state.hpp"
-#include "etasl_task_utils/outputhandler.hpp"
-#include "etasl_task_utils/etasl_error.hpp"
+#include "etasl_interfaces/msg/output_derivatives.hpp"
 
 namespace etasl {
 using namespace KDL;
-/**
- * Example of a class that handles output suitable for simple, unbuffered, csv output.
- * It gets the output values from the context and outputs the results in a
- * tab-delimited file with a header containing the names of the signals
- *
- * Only handles double-expressions !
- *
- * This class is just an example, you can choose the structure of the class and its methods
- * yourself.
- */
-class JointStateOutputHandler : public OutputHandler {
-    typedef sensor_msgs::msg::JointState MsgType;
 
+class TopicOutputDerivativesHandler : public OutputHandler {
 private:
+    std::vector<Expression<double>::Ptr> outp;
     Context::Ptr ctx;
+    std::vector<std::string> not_found;
     std::string topicname;
+    std::vector<std::string> varnames;
     rclcpp_lifecycle::LifecycleNode::SharedPtr node;
-    rclcpp_lifecycle::LifecyclePublisher<MsgType>::SharedPtr pub;
-    MsgType msg;
+    rclcpp_lifecycle::LifecyclePublisher<etasl_interfaces::msg::OutputDerivatives>::SharedPtr pub;
+    etasl_interfaces::msg::OutputDerivatives msg;
     bool initialized;
     bool activated;
     std::string name;
 
+    //Stuff to compute derivatives:
+    int time_ndx;
+    std::vector<int>          fnames_ctx_ndx;
+    std::vector<int>          jnames_ctx_ndx;
+    Eigen::VectorXd           fvelocities;
+    Eigen::VectorXd           jvelocities;
+    boost::shared_ptr<solver> slv_;
+
 public:
     /**
-     * Gets all position and velocity values for the robot variables
-     * in the specification.
      */
-    JointStateOutputHandler();
+    TopicOutputDerivativesHandler();
+
 
     /**
-     * @return a name of this instance of JointStateOutputHandler
+     * @return get the name of this instance of TopicOutputDerivativesHandler
     */
     virtual const std::string& getName() const override;
 
@@ -66,18 +64,15 @@ public:
         const Eigen::VectorXd& fvel,
         const Eigen::VectorXd& fpos) override;
 
-    virtual void finalize() override;
-
+    // virtual void finalize();
 
     virtual void on_activate(Context::Ptr ctx,    
                             const std::vector<std::string>& jnames,
                             const std::vector<std::string>& fnames,
                             boost::shared_ptr<solver> slv) override;
-                            
+
+
     virtual void on_deactivate(Context::Ptr ctx) override;
 
-    
-}; // JointStateOutputHandler
+}; // TopicOutputDerivativesHandler
 } // namespace KDL
-
-#endif

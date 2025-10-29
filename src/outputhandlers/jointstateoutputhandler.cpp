@@ -38,6 +38,16 @@ bool JointStateOutputHandler::initialize(
         // pub = node->create_publisher<MsgType>(topicname, rclcpp::SensorDataQoS());
         // auto qos = rclcpp::SensorDataQoS().keep_last(1).lifespan(100ms).reliability(rclcpp::ReliabilityPolicy::Reliable);
         auto qos = rclcpp::SensorDataQoS().keep_last(1).lifespan(100ms);
+
+        // rclcpp::QoS qos( rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
+
+        // qos
+        //   .reliability(rmw_qos_reliability_policy_t::RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT) //Uses TCP for reliability instead of UDP
+        //   .durability(rmw_qos_durability_policy_t::RMW_QOS_POLICY_DURABILITY_VOLATILE)
+        //   .history(rmw_qos_history_policy_t::RMW_QOS_POLICY_HISTORY_KEEP_LAST) //Keeps the last msgs received in case buffer is fulll
+        //   .keep_last(1); //Buffer size
+
+
         pub = node->create_publisher<MsgType>(topicname, qos);
         pub->on_deactivate();
         initialized = true;
@@ -85,7 +95,8 @@ void JointStateOutputHandler::update(
 
 void JointStateOutputHandler::on_activate(Context::Ptr ctx,
     const std::vector<std::string>& jnames,
-    const std::vector<std::string>& fnames) 
+    const std::vector<std::string>& fnames,
+    boost::shared_ptr<solver> slv) 
 {
     // std::cout << "entering on activate =======================" << std::endl;
     if(!initialized){
