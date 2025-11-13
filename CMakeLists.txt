@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(etasl_ros2_default_plugins)
 
-message("--------------etasl_ros2_default_plugins compiling ----------------")
+message("-------------- ${PROJECT_NAME} compiling ----------------")
 
 
 
@@ -36,11 +36,13 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 
 # -- start --Stuff for triple buffer implementation of boost 1.89
-set(BOOST_ROOT "/opt/boost/1.89.0")
-set(CMAKE_PREFIX_PATH "/opt/boost/1.89.0" ${CMAKE_PREFIX_PATH})
+set(BOOST_ROOT "$ENV{HOME}/.local/lib/boost/1.89.0")
+set(CMAKE_PREFIX_PATH "$ENV{HOME}/.local/lib/boost/1.89.0" ${CMAKE_PREFIX_PATH})
 find_package(Boost 1.89 REQUIRED)
+# find_package(Boost 1.89 REQUIRED COMPONENTS lockfree)
 message(STATUS "Using Boost version ${Boost_VERSION}")
 # -- end -- Stuff for triple buffer implementation of boost 1.89
+
 
 # # Add this at the top of your CMakeLists.txt file
 # find_package(pybind11 REQUIRED)
@@ -48,9 +50,15 @@ message(STATUS "Using Boost version ${Boost_VERSION}")
 # # Add this before the pybind11_add_module calls
 # # include_directories(${pybind11_INCLUDE_DIRS})
 
+message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
+
+
 include_directories(
    include
+  #  $ENV{HOME}/.local/lib/boost/1.89.0/include  # <- point directly to Boost include
+   ${Boost_INCLUDE_DIRS}
 )
+
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -73,7 +81,7 @@ set(src_etasl_ros2_default_plugins
     #Add all plugin src files here
 )
 
-add_library(etasl_ros2_default_plugins 
+add_library(${PROJECT_NAME} 
             SHARED
             ${src_etasl_ros2_default_plugins})
 
@@ -101,28 +109,32 @@ set(dependencies
     fmt   
     jsoncpp
     # etasl_task_utils
+
 )
 
 
 pluginlib_export_plugin_description_file(etasl_ros2 plugins.xml)
 
-target_include_directories(etasl_ros2_default_plugins PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-  ${Boost_INCLUDE_DIRS}
-  )
+target_include_directories(${PROJECT_NAME} 
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+    ${Boost_INCLUDE_DIRS}
+    $<BUILD_INTERFACE:${ament_index_cpp_INCLUDE_DIRS}>  # if needed
+)
 
-ament_target_dependencies(etasl_ros2_default_plugins ${rosdependencies})  
-target_link_libraries(etasl_ros2_default_plugins ${dependencies})
+target_link_libraries(${PROJECT_NAME} ${dependencies})
+ament_target_dependencies(${PROJECT_NAME} ${rosdependencies})  
+
 
 ament_export_dependencies(etasl_ros2)
 
 ament_export_libraries(
-  etasl_ros2_default_plugins
+  ${PROJECT_NAME}
 )
 
 install(
-  TARGETS etasl_ros2_default_plugins
+  TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
@@ -134,7 +146,7 @@ install(DIRECTORY include/
 install(DIRECTORY json_schemas
   DESTINATION share/${PROJECT_NAME})
 
-# install(TARGETS etasl_ros2_default_plugins
+# install(TARGETS ${PROJECT_NAME}
 #   DESTINATION lib/${PROJECT_NAME})
 
 
