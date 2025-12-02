@@ -1,6 +1,6 @@
 #pragma once
 
-#include "etasl_task_utils/registry.hpp"
+#include "crospi_utils/registry.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 

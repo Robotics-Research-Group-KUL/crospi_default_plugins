@@ -1,5 +1,23 @@
+#  Copyright (c) 2025 KU Leuven, Belgium
+#
+#  Author: Santiago Iregui
+#  email: <santiago.iregui@kuleuven.be>
+#
+#  GNU Lesser General Public License Usage
+#  Alternatively, this file may be used under the terms of the GNU Lesser
+#  General Public License version 3 as published by the Free Software
+#  Foundation and appearing in the file LICENSE.LGPLv3 included in the
+#  packaging of this file. Please review the following information to
+#  ensure the GNU Lesser General Public License version 3 requirements
+#  will be met: https://www.gnu.org/licenses/lgpl.html.
+# 
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+
 cmake_minimum_required(VERSION 3.8)
-project(etasl_ros2_default_plugins)
+project(crospi_default_plugins)
 
 message("-------------- ${PROJECT_NAME} compiling ----------------")
 
@@ -17,8 +35,8 @@ find_package(ament_cmake REQUIRED)
 # find_package(ament_index_cpp REQUIRED)
 
 find_package(pluginlib REQUIRED)
-find_package(etasl_ros2 REQUIRED)
-find_package(etasl_interfaces REQUIRED)
+find_package(crospi_core REQUIRED)
+find_package(crospi_interfaces REQUIRED)
 
 
 find_package(rclcpp REQUIRED)
@@ -64,7 +82,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # include_directories(include ${LUA_INCLUDE_DIR})
 
-set(src_etasl_ros2_default_plugins
+set(src_crospi_default_plugins
     src/simulators/simple_kinematic_simulation.cpp
 
     src/inputhandlers/topicinputhandler.cpp
@@ -83,20 +101,20 @@ set(src_etasl_ros2_default_plugins
 
 add_library(${PROJECT_NAME} 
             SHARED
-            ${src_etasl_ros2_default_plugins})
+            ${src_crospi_default_plugins})
 
 
 set(rosdependencies
   rclcpp
   rclcpp_lifecycle
-  etasl_ros2
+  crospi_core
   pluginlib
   sensor_msgs
   geometry_msgs
   tf2
   tf2_geometry_msgs
   tf2_ros
-  etasl_interfaces
+  crospi_interfaces
   # ament_index_cpp
   # Eigen3
 )
@@ -108,12 +126,12 @@ set(dependencies
     etasl::expressiongraph_context_lua   
     fmt   
     jsoncpp
-    # etasl_task_utils
+    # crospi_utils
 
 )
 
 
-pluginlib_export_plugin_description_file(etasl_ros2 plugins.xml)
+pluginlib_export_plugin_description_file(crospi_core plugins.xml)
 
 target_include_directories(${PROJECT_NAME} 
   PUBLIC
@@ -127,7 +145,7 @@ target_link_libraries(${PROJECT_NAME} ${dependencies})
 ament_target_dependencies(${PROJECT_NAME} ${rosdependencies})  
 
 
-ament_export_dependencies(etasl_ros2)
+ament_export_dependencies(crospi_core)
 
 ament_export_libraries(
   ${PROJECT_NAME}

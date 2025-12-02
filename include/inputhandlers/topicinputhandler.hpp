@@ -1,7 +1,26 @@
+//  Copyright (c) 2025 KU Leuven, Belgium
+//
+//  Authors: Santiago Iregui and Erwin Aertbeliën
+//  emails: <santiago.iregui@kuleuven.be> and <erwin.aertbelien@kuleuven.be>
+//
+//  GNU Lesser General Public License Usage
+//  Alternatively, this file may be used under the terms of the GNU Lesser
+//  General Public License version 3 as published by the Free Software
+//  Foundation and appearing in the file LICENSE.LGPLv3 included in the
+//  packaging of this file. Please review the following information to
+//  ensure the GNU Lesser General Public License version 3 requirements
+//  will be met: https://www.gnu.org/licenses/lgpl.html.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+
+
 #pragma once
 
-#include "etasl_interfaces/msg/input.hpp"
-#include "etasl_task_utils/inputhandler.hpp"
+#include "crospi_interfaces/msg/input.hpp"
+#include "crospi_utils/inputhandler.hpp"
 #include <expressiongraph/context.hpp>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
@@ -25,8 +44,8 @@ class TopicInputHandler : public InputHandler {
     std::unordered_map<std::string, size_t> inputs; // from name to index in buffer, for ALL input channels
     std::vector<Buffer> buffer;
     rclcpp_lifecycle::LifecycleNode::SharedPtr node;
-    rclcpp::Subscription<etasl_interfaces::msg::Input>::SharedPtr sub;
-    etasl_interfaces::msg::Input msg;
+    rclcpp::Subscription<crospi_interfaces::msg::Input>::SharedPtr sub;
+    crospi_interfaces::msg::Input msg;
     std::string name;
 
 public:
@@ -59,7 +78,7 @@ public:
         Eigen::VectorXd& jpos,
         Eigen::VectorXd& fpos) override;
 
-    virtual void on_new_message(const etasl_interfaces::msg::Input& msg);
+    virtual void on_new_message(const crospi_interfaces::msg::Input& msg);
 
     /**
      * gets new values for this input and use them to fill in the input channels defined

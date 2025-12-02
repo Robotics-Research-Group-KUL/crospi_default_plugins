@@ -1,6 +1,6 @@
 #pragma once
 
-#include "etasl_task_utils/registry.hpp"
+#include "crospi_utils/registry.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace etasl {

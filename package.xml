@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>etasl_ros2_default_plugins</name>
+  <name>crospi_default_plugins</name>
   <version>0.0.0</version>
-  <description>ROS2 package containing default etasl_ros2 plugins</description>
+  <description>ROS2 package containing default crospi_core plugins</description>
   <maintainer email="santiago.iregui@kuleuven.be">Santiago Iregui</maintainer>
   <license>LGPL-3.0-only</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>pluginlib</depend>
-  <depend>etasl_ros2</depend>
+  <depend>crospi_core</depend>
 
   <depend>std_msgs</depend>
-  <depend>etasl_interfaces</depend>
+  <depend>crospi_interfaces</depend>
 
   <depend>python-jsonref-pip</depend>
   <depend>python-jsonschema-pip</depend>

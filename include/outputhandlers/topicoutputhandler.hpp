@@ -1,10 +1,29 @@
+//  Copyright (c) 2025 KU Leuven, Belgium
+//
+//  Authors: Santiago Iregui and Erwin Aertbeliën
+//  emails: <santiago.iregui@kuleuven.be> and <erwin.aertbelien@kuleuven.be>
+//
+//  GNU Lesser General Public License Usage
+//  Alternatively, this file may be used under the terms of the GNU Lesser
+//  General Public License version 3 as published by the Free Software
+//  Foundation and appearing in the file LICENSE.LGPLv3 included in the
+//  packaging of this file. Please review the following information to
+//  ensure the GNU Lesser General Public License version 3 requirements
+//  will be met: https://www.gnu.org/licenses/lgpl.html.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+
+
 #pragma once
 
-#include "etasl_task_utils/outputhandler.hpp"
+#include "crospi_utils/outputhandler.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "etasl_interfaces/msg/output.hpp"
+#include "crospi_interfaces/msg/output.hpp"
 
 namespace etasl {
 using namespace KDL;
@@ -17,8 +36,8 @@ private:
     std::string topicname;
     std::vector<std::string> varnames;
     rclcpp_lifecycle::LifecycleNode::SharedPtr node;
-    rclcpp_lifecycle::LifecyclePublisher<etasl_interfaces::msg::Output>::SharedPtr pub;
-    etasl_interfaces::msg::Output msg;
+    rclcpp_lifecycle::LifecyclePublisher<crospi_interfaces::msg::Output>::SharedPtr pub;
+    crospi_interfaces::msg::Output msg;
     bool initialized;
     bool activated;
     std::string name;

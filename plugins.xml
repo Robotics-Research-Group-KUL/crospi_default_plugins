@@ -1,4 +1,4 @@
-<library path="etasl_ros2_default_plugins">
+<library path="crospi_default_plugins">
   <class type="etasl::simple_kinematic_simulation" base_class_type="etasl::RobotSimulator">
     <description>This is a plugin driver for etasl for simple_kinematic_simulation.</description>
   </class>
@@ -9,7 +9,7 @@
     <description>This is a plugin for a wrench input handler (read geometry_msgs/Wrench.msg ROS2 msgs).</description>
   </class>
   <class type="etasl::TopicInputHandler" base_class_type="etasl::InputHandler">
-    <description>This is a plugin for a simple topic input handler (read etasl_interfaces::msg::Input ROS2 msgs).</description>
+    <description>This is a plugin for a simple topic input handler (read crospi_interfaces::msg::Input ROS2 msgs).</description>
   </class>
   <class type="etasl::PoseInputHandler" base_class_type="etasl::InputHandler">
     <description>This is a plugin for a pose input handler (read geometry_msgs/Pose.msg ROS2 msgs).</description>

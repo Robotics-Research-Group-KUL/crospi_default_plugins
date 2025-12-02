@@ -1,6 +1,25 @@
+//  Copyright (c) 2025 KU Leuven, Belgium
+//
+//  Authors: Santiago Iregui and Erwin Aertbeliën
+//  emails: <santiago.iregui@kuleuven.be> and <erwin.aertbelien@kuleuven.be>
+//
+//  GNU Lesser General Public License Usage
+//  Alternatively, this file may be used under the terms of the GNU Lesser
+//  General Public License version 3 as published by the Free Software
+//  Foundation and appearing in the file LICENSE.LGPLv3 included in the
+//  packaging of this file. Please review the following information to
+//  ensure the GNU Lesser General Public License version 3 requirements
+//  will be met: https://www.gnu.org/licenses/lgpl.html.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+
+
 #include "inputhandlers/topicinputhandler.hpp"
-#include "etasl_task_utils/etasl_error.hpp"
-#include "etasl_task_utils/outputhandler.hpp" // to get to cut_global
+#include "crospi_utils/etasl_error.hpp"
+#include "crospi_utils/outputhandler.hpp" // to get to cut_global
 #include <fmt/format.h>
 
 namespace etasl {
@@ -52,7 +71,7 @@ bool TopicInputHandler::initialize(
         }
     }
 
-    sub = node->create_subscription<etasl_interfaces::msg::Input>(topicname, 10,
+    sub = node->create_subscription<crospi_interfaces::msg::Input>(topicname, 10,
         std::bind(&TopicInputHandler::on_new_message, this, _1));
 
     if (!sub) {
@@ -63,7 +82,7 @@ bool TopicInputHandler::initialize(
     return true;
 }
 
-void TopicInputHandler::on_new_message(const etasl_interfaces::msg::Input& msg)
+void TopicInputHandler::on_new_message(const crospi_interfaces::msg::Input& msg)
 {
     if (msg.data.size() != msg.names.size()) {
         throw etasl_error(etasl_error::INPUTHANDLER_INCONSISTENT_MESSAGE, "message with different lengths for data and names (topic '" + topicname + "')");
