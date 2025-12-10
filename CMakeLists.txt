@@ -54,6 +54,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 
 # -- start --Stuff for triple buffer implementation of boost 1.89
+set(Boost_NO_SYSTEM_PATHS ON)
 set(BOOST_ROOT "$ENV{HOME}/.local/lib/boost/1.89.0")
 set(CMAKE_PREFIX_PATH "$ENV{HOME}/.local/lib/boost/1.89.0" ${CMAKE_PREFIX_PATH})
 find_package(Boost 1.89 REQUIRED)
