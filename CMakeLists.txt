@@ -123,6 +123,7 @@ set(src_crospi_default_plugins
     src/inputhandlers/tfinputhandler.cpp
     src/inputhandlers/poseinputhandler.cpp
     src/inputhandlers/vectorinputhandler.cpp
+    src/inputhandlers/jointstateinputhandler.cpp
 
     src/outputhandlers/jointstateoutputhandler.cpp
     # src/outputhandlers/tfoutputhandler.cpp
