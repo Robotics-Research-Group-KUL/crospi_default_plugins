@@ -20,6 +20,9 @@
   <class type="etasl::TFInputHandler" base_class_type="etasl::InputHandler">
     <description>This is a plugin for a TF input handler (read ROS2 TFs).</description>
   </class>
+  <class type="etasl::JointStateInputHandler" base_class_type="etasl::InputHandler">
+    <description>This is a plugin for a Joint state input handler (read sensor_msgs/JointState.msg ROS2 msgs).</description>
+  </class>
   <class type="etasl::JointStateOutputHandler" base_class_type="etasl::OutputHandler">
     <description>This is a plugin for a Joint state output handler (e.g. to visualize in RVIZ).</description>
   </class>
