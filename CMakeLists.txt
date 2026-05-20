@@ -167,10 +167,10 @@ set(ros_targets
     rclcpp::rclcpp
     rclcpp_lifecycle::rclcpp_lifecycle
     crospi_core::crospi_core
-    crospi_interfaces::crospi_interfaces
     tf2::tf2
     tf2_ros::tf2_ros
     pluginlib::pluginlib
+    ${crospi_interfaces_TARGETS}
     ${std_msgs_TARGETS}
     ${sensor_msgs_TARGETS}
     ${geometry_msgs_TARGETS}
