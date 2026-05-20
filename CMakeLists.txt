@@ -141,13 +141,14 @@ set(rosdependencies
   rclcpp
   rclcpp_lifecycle
   crospi_core
+  crospi_interfaces
+  tf2
+  tf2_ros
   pluginlib
+  std_msgs
   sensor_msgs
   geometry_msgs
-  tf2
   tf2_geometry_msgs
-  tf2_ros
-  crospi_interfaces
   # ament_index_cpp
   # Eigen3
 )
@@ -160,9 +161,21 @@ set(dependencies
     fmt   
     jsoncpp
     # crospi_utils
-
 )
 
+set(ros_targets 
+    rclcpp::rclcpp
+    rclcpp_lifecycle::rclcpp_lifecycle
+    crospi_core::crospi_core
+    crospi_interfaces::crospi_interfaces
+    tf2::tf2
+    tf2_ros::tf2_ros
+    pluginlib::pluginlib
+    ${std_msgs_TARGETS}
+    ${sensor_msgs_TARGETS}
+    ${geometry_msgs_TARGETS}
+    ${tf2_geometry_msgs_TARGETS}
+)
 
 pluginlib_export_plugin_description_file(crospi_core plugins.xml)
 
@@ -176,11 +189,6 @@ target_include_directories(${PROJECT_NAME}
 
 
 #The following is done because ROS2 deprecated ament_target_dependencies in favor of target_link_libraries, but the former is still required for older (legacy) ROS2 versions. 
-set(ros_targets "")
-foreach(pkg IN LISTS rosdependencies)
-  list(APPEND ros_targets "${pkg}::${pkg}") #This might not work for all packages. ${pkg_TARGETS} might be needed for some. Check https://github.com/ament/ament_cmake/issues/584#issuecomment-2931061571
-endforeach()
-
 if(DEFINED ENV{ROS_DISTRO} AND (
   "$ENV{ROS_DISTRO}" STREQUAL "foxy" OR
   "$ENV{ROS_DISTRO}" STREQUAL "galactic" OR
