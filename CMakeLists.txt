@@ -105,7 +105,7 @@ set(rosdependencies
   # crospi_interfaces
   # tf2
   # tf2_ros
-  # pluginlib
+  pluginlib
   # std_msgs
   # sensor_msgs
   # geometry_msgs
@@ -134,7 +134,7 @@ set(ros_targets
     # tf2::tf2
     # tf2_ros::tf2_ros
     # Eigen3::Eigen
-    # pluginlib::pluginlib
+    pluginlib::pluginlib
     # ${crospi_interfaces_TARGETS}
     # ${std_msgs_TARGETS}
     # ${sensor_msgs_TARGETS}
