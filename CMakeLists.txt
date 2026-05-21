@@ -37,6 +37,7 @@ find_package(ament_cmake REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(crospi_core REQUIRED)
 find_package(crospi_interfaces REQUIRED)
+find_package(resource_retriever REQUIRED)
 
 
 find_package(rclcpp REQUIRED)
@@ -140,7 +141,6 @@ add_library(${PROJECT_NAME}
 set(rosdependencies
   rclcpp
   rclcpp_lifecycle
-  crospi_core
   crospi_interfaces
   tf2
   tf2_ros
@@ -149,6 +149,7 @@ set(rosdependencies
   sensor_msgs
   geometry_msgs
   tf2_geometry_msgs
+  crospi_core
   # ament_index_cpp
   # Eigen3
 )
@@ -160,13 +161,15 @@ set(dependencies
     etasl::expressiongraph_context_lua   
     fmt   
     jsoncpp
+    crospi_core::crospi_utils
+    crospi_core::crospi_node_utils
+    crospi_core::robot_interfacing_utils
     # crospi_utils
 )
 
 set(ros_targets 
     rclcpp::rclcpp
     rclcpp_lifecycle::rclcpp_lifecycle
-    crospi_core::crospi_core
     tf2::tf2
     tf2_ros::tf2_ros
     pluginlib::pluginlib
