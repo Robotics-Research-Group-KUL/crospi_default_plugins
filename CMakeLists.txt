@@ -21,38 +21,28 @@ project(crospi_default_plugins)
 
 message("-------------- ${PROJECT_NAME} compiling ----------------")
 
-
-
-
-
-# if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-#   add_compile_options(-Wall -Wextra -Wpedantic)
-# endif()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# find_package(ament_cmake_ros REQUIRED)
-# find_package(ament_index_cpp REQUIRED)
-
 find_package(pluginlib REQUIRED)
 find_package(crospi_core REQUIRED)
 find_package(crospi_interfaces REQUIRED)
 find_package(resource_retriever REQUIRED)
-
-
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(etasl REQUIRED)
-
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
-# find_package(Eigen3 REQUIRED)
-# find_package(pugixml REQUIRED)
 find_package(jsoncpp REQUIRED)
-# find_package(Sphinx REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+
+
+# -- START -- Stuff for triple buffer implementation of boost 1.89
 
 # --------------------------------------------------
 # Resolve Boost 1.89 root. This is done because in github, docker, and local home might or might not be defined.
@@ -71,18 +61,6 @@ else()
   endif()
 endif()
 
-# --------------------------------------------------
-# Find Boost (headers-only or full, as needed)
-# --------------------------------------------------
-# find_package(Boost 1.89 REQUIRED
-#   HINTS
-#     ${_BOOST_1_89_CUSTOM_ROOT}
-#   PATHS
-#     ${_BOOST_1_89_CUSTOM_ROOT}
-# )
-
-# Optional but useful for debugging
-
 
 set(BOOST_ROOT "${_BOOST_1_89_CUSTOM_ROOT}")
 set(Boost_INCLUDE_DIR "${_BOOST_1_89_CUSTOM_ROOT}/include")
@@ -92,29 +70,12 @@ message(STATUS "CMAKE_PREFIX_PATH after: ${CMAKE_PREFIX_PATH}")
 message(STATUS "Using Boost version ${Boost_VERSION}")
 
 find_package(Boost 1.89 REQUIRED)
-# find_package(Boost 1.89 REQUIRED COMPONENTS lockfree)
 message(STATUS "Using Boost version ${Boost_VERSION}")
-# -- end -- Stuff for triple buffer implementation of boost 1.89
-
-
-# # Add this at the top of your CMakeLists.txt file
-# find_package(pybind11 REQUIRED)
-
-# # Add this before the pybind11_add_module calls
-# # include_directories(${pybind11_INCLUDE_DIRS})
+# -- END -- Stuff for triple buffer implementation of boost 1.89
 
 message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
 
-
-include_directories(
-   include
-   ${Boost_INCLUDE_DIRS}
-)
-
-
 set(CMAKE_CXX_STANDARD 17)
-
-# include_directories(include ${LUA_INCLUDE_DIR})
 
 set(src_crospi_default_plugins
     src/simulators/simple_kinematic_simulation.cpp
@@ -130,7 +91,6 @@ set(src_crospi_default_plugins
     # src/outputhandlers/tfoutputhandler.cpp
     src/outputhandlers/topicoutputhandler.cpp
     src/outputhandlers/topicoutputderivativeshandler.cpp
-    #Add all plugin src files here
 )
 
 add_library(${PROJECT_NAME} 
@@ -164,7 +124,6 @@ set(dependencies
     crospi_core::crospi_utils
     crospi_core::crospi_node_utils
     crospi_core::robot_interfacing_utils
-    # crospi_utils
 )
 
 set(ros_targets 
@@ -226,18 +185,6 @@ install(DIRECTORY include/
 install(DIRECTORY json_schemas
   DESTINATION share/${PROJECT_NAME})
 
-# install(TARGETS ${PROJECT_NAME}
-#   DESTINATION lib/${PROJECT_NAME})
-
-
-# ament_export_include_directories(
-#   include
-# )
-
-
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
