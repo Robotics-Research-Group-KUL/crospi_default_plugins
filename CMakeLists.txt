@@ -30,6 +30,7 @@ find_package(ament_cmake REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(crospi_core REQUIRED)
 find_package(crospi_interfaces REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(resource_retriever REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
@@ -99,44 +100,46 @@ add_library(${PROJECT_NAME}
 
 
 set(rosdependencies
-  rclcpp
-  rclcpp_lifecycle
-  crospi_interfaces
-  tf2
-  tf2_ros
-  pluginlib
-  std_msgs
-  sensor_msgs
-  geometry_msgs
-  tf2_geometry_msgs
-  crospi_core
+  # rclcpp
+  # rclcpp_lifecycle
+  # crospi_interfaces
+  # tf2
+  # tf2_ros
+  # pluginlib
+  # std_msgs
+  # sensor_msgs
+  # geometry_msgs
+  # tf2_geometry_msgs
+  # crospi_core
   # ament_index_cpp
   # Eigen3
 )
 
 
 set(dependencies
-    etasl::expressiongraph_context 
-    # etasl::expressiongraph_solver_qpoases 
-    etasl::expressiongraph_context_lua   
-    fmt   
-    jsoncpp
+    # etasl::expressiongraph_context 
+    # # etasl::expressiongraph_solver_qpoases 
+    # etasl::expressiongraph_context_lua   
+    # fmt   
+    # jsoncpp
+    Eigen3::Eigen
     crospi_core::crospi_utils
     crospi_core::crospi_node_utils
     crospi_core::robot_interfacing_utils
 )
 
 set(ros_targets 
-    rclcpp::rclcpp
-    rclcpp_lifecycle::rclcpp_lifecycle
-    tf2::tf2
-    tf2_ros::tf2_ros
-    pluginlib::pluginlib
-    ${crospi_interfaces_TARGETS}
-    ${std_msgs_TARGETS}
-    ${sensor_msgs_TARGETS}
-    ${geometry_msgs_TARGETS}
-    ${tf2_geometry_msgs_TARGETS}
+    # rclcpp::rclcpp
+    # rclcpp_lifecycle::rclcpp_lifecycle
+    # tf2::tf2
+    # tf2_ros::tf2_ros
+    # Eigen3::Eigen
+    # pluginlib::pluginlib
+    # ${crospi_interfaces_TARGETS}
+    # ${std_msgs_TARGETS}
+    # ${sensor_msgs_TARGETS}
+    # ${geometry_msgs_TARGETS}
+    # ${tf2_geometry_msgs_TARGETS}
 )
 
 pluginlib_export_plugin_description_file(crospi_core plugins.xml)
