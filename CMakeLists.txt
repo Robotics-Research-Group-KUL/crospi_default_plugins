@@ -16,7 +16,7 @@
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU Lesser General Public License for more details.
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project(crospi_default_plugins)
 
 message("-------------- ${PROJECT_NAME} compiling ----------------")
@@ -70,7 +70,7 @@ set(CMAKE_PREFIX_PATH "${_BOOST_1_89_CUSTOM_ROOT}" ${CMAKE_PREFIX_PATH})
 message(STATUS "CMAKE_PREFIX_PATH after: ${CMAKE_PREFIX_PATH}")
 message(STATUS "Using Boost version ${Boost_VERSION}")
 
-find_package(Boost 1.89 REQUIRED)
+find_package(Boost 1.89 CONFIG REQUIRED)
 message(STATUS "Using Boost version ${Boost_VERSION}")
 # -- END -- Stuff for triple buffer implementation of boost 1.89
 
