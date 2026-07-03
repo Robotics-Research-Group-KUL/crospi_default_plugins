@@ -17,9 +17,6 @@ ros_topics_driver_crospi::ros_topics_driver_crospi()
 {
     // DOF is not yet known at construction time; resizing happens in construct()
 }
-{
-    // DOF is not yet known at construction time; resizing happens in construct()
-}
 
 void ros_topics_driver_crospi::construct(std::string robot_name, 
                         const Json::Value& config,
@@ -32,7 +29,7 @@ void ros_topics_driver_crospi::construct(std::string robot_name,
     
     // Read joint names from config and derive DOF from them
     robot_joints_.clear();
-    for (auto n : jsonchecker_->asArray(driver, "robot_joints")) {
+    for (auto n : jsonchecker->asArray(config, "robot_joints")) {
         robot_joints_.push_back(n.asString());
     }
     DOF = robot_joints_.size();
