@@ -90,12 +90,12 @@ bool ros_topics_driver_crospi::initialize()
 
 void ros_topics_driver_crospi::update(volatile std::atomic<bool>& stopFlag)
 {
-    if(!received_feedback_) {
-        // If feedback has not been received yet, we cannot update the command
-        RCLCPP_WARN(ros_node_->get_logger(), "Feedback not received yet. Skipping update of control loop in Crospi.");
-        executor_.spin_some(); //Spins the executor to process any incoming messages, including feedback
-        return;
-    }
+    // if(!received_feedback_) {
+    //     // If feedback has not been received yet, we cannot update the command
+    //     RCLCPP_WARN(ros_node_->get_logger(), "Feedback not received yet. Skipping update of control loop in Crospi.");
+    //     executor_.spin_some(); //Spins the executor to process any incoming messages, including feedback
+    //     return;
+    // }
 
     readSetpointJointVelocity(setpoint_joint_vel_);
 
