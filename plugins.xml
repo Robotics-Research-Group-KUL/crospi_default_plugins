@@ -2,6 +2,9 @@
   <class type="etasl::simple_kinematic_simulation" base_class_type="etasl::RobotSimulator">
     <description>This is a plugin driver for etasl for simple_kinematic_simulation.</description>
   </class>
+  <class type="etasl::ros_topics_driver_crospi" base_class_type="etasl::RobotDriver">
+    <description>This is a driver to interface with a robot arm via ROS2 topics using JointState messages for both command and feedback.</description>
+  </class>
   <class type="etasl::TwistInputHandler" base_class_type="etasl::InputHandler">
     <description>This is a plugin for a twist input handler (read geometry_msgs/Twist.msg ROS2 msgs).</description>
   </class>

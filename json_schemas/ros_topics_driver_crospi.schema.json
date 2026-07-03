@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema",
+    "$id":"ros_topics_driver_crospi.json",
+    "type":"object",
+    "properties":{
+        "is-ros_topics_driver_crospi" : {
+            "description":"To indicate that the tasks will be executed using the ros_topics_driver_crospi driver when running on the real robot.",
+            "type":"boolean",
+            "const": true
+          }
+    },
+    "required":["is-ros_topics_driver_crospi"],
+    "additionalProperties": true,
+    "dependencies":{
+        "is-ros_topics_driver_crospi":{
+          "required":["robot_joints", "periodicity", "feedback_topic", "command_topic"],
+          "properties":{
+              "robot_joints": {
+                "description":"Names of the joints that will be interfaced through this robot driver. This names need to be consistent with the ones declared in the URDF file of the robot and must exist also in the robot_joints declared in the default_robot_specification.",
+                "type":"array",
+                "items": {"type": "string"},
+                "minItems": 1,
+                "default": [
+                        "shoulder_pan_joint",
+                        "shoulder_lift_joint",
+                        "elbow_joint",
+                        "wrist_1_joint",
+                        "wrist_2_joint",
+                        "wrist_3_joint"
+                    ]
+            },
+            "periodicity" : {
+                "description":"Periodicity in which the integration will be performed in seconds. 1/periodicity is the update frequency in Hz.",
+                "type":"number",
+                "minimum": 0.001,
+                "maximum": 0.01,
+                "default": 0.01
+            },
+            "feedback_topic" : {
+                "description":"Name of the topic where the feedback messages are published and read by Crospi.",
+                "type":"string",
+                "default": "/crospi_control/joint_feedback"
+            },
+            "command_topic" : {
+                "description":"Name of the topic where the command messages need to be published by Crospi.",
+                "type":"string",
+                "default": "/crospi_control/joint_command"
+            }
+          }
+        }
+      }
+}

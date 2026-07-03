@@ -80,6 +80,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(src_crospi_default_plugins
     src/simulators/simple_kinematic_simulation.cpp
+    src/robotdrivers/ros_topics_driver_crospi.cpp
 
     src/inputhandlers/topicinputhandler.cpp
     src/inputhandlers/twistinputhandler.cpp
