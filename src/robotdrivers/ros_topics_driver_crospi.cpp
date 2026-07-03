@@ -110,6 +110,13 @@ void ros_topics_driver_crospi::update(volatile std::atomic<bool>& stopFlag)
 
     executor_.spin_some();
     writeFeedbackJointPosition(joint_pos_);
+
+    //print feedback joint positions
+    std::cout << "Received initial feedback joint positions: ";
+    for (size_t i = 0; i < DOF; ++i) {
+        std::cout << joint_pos_.data[i] << " ";
+    }
+    std::cout << std::endl;
 }
 
 void ros_topics_driver_crospi::feedbackCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
@@ -129,6 +136,8 @@ void ros_topics_driver_crospi::feedbackCallback(const sensor_msgs::msg::JointSta
         for (size_t i = 0; i < DOF; ++i) {
             command_msg.position[i] = joint_pos_.data[i];
         }
+        //print message to indicate that feedback has been received for the first time
+        RCLCPP_INFO(ros_node_->get_logger(), "Feedback received for the first time. Initializing command positions to current feedback positions.");
         received_feedback_ = true;
     }
 }
