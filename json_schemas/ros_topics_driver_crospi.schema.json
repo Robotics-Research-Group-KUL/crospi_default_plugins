@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-06/schema",
-    "$id":"ros_topics_driver_crospi.json",
+    "$id":"ros_topics_driver_crospi.schema.json",
     "type":"object",
     "properties":{
         "is-ros_topics_driver_crospi" : {
