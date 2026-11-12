@@ -9,14 +9,12 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>pluginlib</depend>
   <depend>crospi_core</depend>
 
-  <depend>std_msgs</depend>
-  <depend>crospi_interfaces</depend>
 
-  <depend>python-jsonref-pip</depend>
-  <depend>python-jsonschema-pip</depend>
+  <!-- Python packages used by the crospi_application_template (schema bundling and validation).
+       jsonref has no rosdep rule and is not packaged by Ubuntu: install it with "pip3 install jsonref". -->
+  <exec_depend>python3-jsonschema</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
